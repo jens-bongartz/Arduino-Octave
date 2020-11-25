@@ -7,7 +7,7 @@ flush(serial_01);
 do
    bytesavailable = get(serial_01,"numbytesavailable");
    
-   if (bytesavailable >0)
+   if (bytesavailable > 0)
      inSerial = fread(serial_01);
      inChar = char(inSerial)
    endif
