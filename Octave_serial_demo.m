@@ -1,11 +1,14 @@
 pkg load instrument-control;
 
+# Windows - Beispiel
 serial_01 = serialport("COM9",115200);
+# MacOSX - Beispiel
+# serial_01 = serialport("/dev/cu.usbserial-1420",115200); 
 
 flush(serial_01);
 
 do
-   bytesavailable = get(serial_01,"numbytesavailable");
+   bytesavailable = get(serial_01,"numbytesavailable"); 
    
    if (bytesavailable > 0)
      inSerial = fread(serial_01);
