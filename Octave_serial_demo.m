@@ -1,6 +1,5 @@
 pkg load instrument-control;
 clear all;
-
 #Windows - COM anpassen
 serial_01 = serialport("COM9",115200);
 #MacOSX - Pfad anpassen!
@@ -12,10 +11,10 @@ ref_array = [];
 x_index = 0;
 
 do
-   bytesavailable = get(serial_01,"numbytesavailable"); 
+   bytesavailable = serial_01.numbytesavailable;
    
    if (bytesavailable > 0)
-     inSerial = fread(serial_01);
+     inSerial = read(serial_01,bytesavailable);
      inChar = char(inSerial);
      inNumbers = strsplit(inChar,{',','ADC:','REF:'});
      count = length(inNumbers);
@@ -24,7 +23,7 @@ do
         adc = str2num(inNumbers{i+1});
         adc_array(end+1)=adc;
         ref_array(end+1)=ref;
-        x_index++;
+        x_index++
      endfor
    endif
    tic
