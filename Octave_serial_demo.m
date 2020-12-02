@@ -19,33 +19,36 @@ do
    bytesavailable = serial_01.numbytesavailable;
    
    if (bytesavailable > 0)
+     %% Zeilenende (println) ist ASCII Kombination 13 10
+     %% char(13) = CR char(10) = LF
      inSerialPort = char(read(serial_01,bytesavailable)); %% Daten werden vom SerialPort gelesen
-     inBuffer     = [inBuffer inSerialPort];              %% und an den inBuffer angehÃ¤ngt
+     inBuffer     = [inBuffer inSerialPort];              %% und an den inBuffer angehängt
      posCRLF      = rindex(inBuffer, cr_lf);              %% Test auf CR/LF im inBuffer 
      if (posCRLF > 0)          
         inChar   = inBuffer(1:posCRLF-1);
         inBuffer = inBuffer(posCRLF+2:end);        
         inNumbers = strsplit(inChar,{',','ADC:','REF:'})
         count = length(inNumbers);
-        for i = 2:2:count
-           ref = str2num(inNumbers{i});
+        for i = 2:2:count                                 %% erste Element bei strsplit ist ´hier immer
+           ref = str2num(inNumbers{i});                   %% ein Leerstring
            adc = str2num(inNumbers{i+1});
            adc_array(end+1)=adc;
            ref_array(end+1)=ref;
            x_index++;
         endfor
      endif     
+     tic
+     clf
+     plot(ref_array);
+     hold on;
+     plot(adc_array);
+     if (x_index > 600)
+        axis([x_index-600 x_index  0 1100]);
+     endif
+     toc
    endif
-   tic
-   clf
-   plot(ref_array);
-   hold on;
-   plot(adc_array);
-   if (x_index > 600)
-      axis([x_index-600 x_index  0 1100]);
-   endif
-   toc
-until(kbhit(1) == 'x');    %% Programmende wenn x-Taste gedrÃ¼ckt wird
+
+until(kbhit(1) == 'x');    %% Programmende wenn x-Taste gedrückt wird
 
 clear serial_01;
 
