@@ -1,5 +1,6 @@
 pkg load instrument-control;
 clear all;
+disp('Open SerialPort!')
 #Windows - COM anpassen
 serial_01 = serialport("COM5",115200);
 #MacOSX - Pfad anpassen!
@@ -11,6 +12,8 @@ ref_array = [];
 x_index = 0;
 cr_lf = [char(13) char(10)];      %% Zeichenkette CR/LF
 inBuffer = [];                    %% Buffer serielle Schnittstelle
+
+disp('Wait for data!')
 
 do
 until (serial_01.numbytesavailable > 0);
@@ -26,6 +29,7 @@ do
      posCRLF      = rindex(inBuffer, cr_lf);              %% Test auf CR/LF im inBuffer 
      if (posCRLF > 0)          
         inChar   = inBuffer(1:posCRLF-1);
+        inChar   = inChar(~isspace(inChar));              %% Leerzeichen aus inChar entfernen
         inBuffer = inBuffer(posCRLF+2:end);        
         inNumbers = strsplit(inChar,{',','ADC:','REF:'})
         count = length(inNumbers);
