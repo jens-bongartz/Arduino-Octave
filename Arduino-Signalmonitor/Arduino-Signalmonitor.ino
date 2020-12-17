@@ -4,7 +4,7 @@ int faADC  = 200;
 
 int msHigh = 100;
 int msLow  = 100;   // Digitaler Ausgang
-int outChannel = 8;  // D9
+int outChannel = 9;  // D9
 // Analoge Eingänge
 int refChannel = 1;  // A1
 int adcChannel = 0;  // A0
